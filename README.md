@@ -7,3 +7,9 @@ How to use:
 - Copy `ffxiv_structs.yml` and `data.yml` from https://github.com/aers/FFXIVClientStructs/tree/main/ida into this directory.
 - Run `deno run --allow-read=data.yml,ffxiv_structs.yml,ffxiv.rcnet --allow-write=ffxiv.rcnet convert-to-rcnet.ts` (or `deno run -A convert-to-rcnet.ts` if you trust the script).
 - Open the `ffxiv.rcnet` project in ReClass.NET! :)
+
+
+Bonus:
+
+- If you don't have the XivReClassPlugin, you can add the flag `--plugin=false` to the script to disable the conversion of the types AtkValue, StdDeque, StdList, StdVector and Utf8String.
+- If you want VTables, you can pass `--vtables` to the script.
