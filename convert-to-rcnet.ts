@@ -99,6 +99,20 @@ const typeInfos: TypeInfo[] = [
     size: 8,
   },
   {
+    types: ["nuint"],
+    reclassNode: "NUIntNode",
+    enumSizeName: "EightBytes",
+    enumFlags: false,
+    size: 8,
+  },
+  {
+    types: ["nint"],
+    reclassNode: "NIntNode",
+    enumSizeName: "EightBytes",
+    enumFlags: false,
+    size: 8,
+  },
+  {
     types: ["long", "__int64"],
     reclassNode: "Int64Node",
     enumSizeName: "EightBytes",
@@ -158,7 +172,7 @@ const typeInfos: TypeInfo[] = [
     size: 1,
   },
   {
-    types: ["byte", "unsigned __int8"],
+    types: ["byte", "unsigned __int8", "char"],
     reclassNode: "UInt8Node",
     enumSizeName: "OneByte",
     enumFlags: true,
