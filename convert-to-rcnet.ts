@@ -604,8 +604,9 @@ function writeField(field: Field) {
   // find out if it's a byte* used for a string
   // best I could do here...
   const isUtf8TextPtr =
-    field.type == "byte*" &&
-    (field.name.includes("String") || field.name.includes("Name"));
+    field.type == "char*" ||
+    (field.type == "byte*" &&
+      (field.name.includes("String") || field.name.includes("Name")));
 
   // find out if it's a char* used for a string
   const isUtf16TextPtr = field.type == "wchar_t*";
