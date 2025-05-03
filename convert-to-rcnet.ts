@@ -456,14 +456,15 @@ writeLine("</enums>");
 writeLine("<classes>");
 
 for (const struct of ffxiv_structs.structs) {
-  if (flags.plugin && (
-       struct.name == "StdDeque`1" || struct.name == "StdDeque`2"
-    || struct.name == "StdList`1" || struct.name == "StdList`2"
-    || struct.name == "StdMap`2" || struct.name == "StdMap`3"
-    || struct.name == "StdSet`1" || struct.name == "StdSet`2"
-    || struct.name == "StdVector`1" || struct.name == "StdVector`2")
-    || struct.name == "RedBlackTree`3"
-    || (struct.type.startsWith("Helper::RedBlackTree::Node<")))
+  if (
+    (flags.plugin &&
+      (struct.name == "StdDeque`1" ||
+        struct.name == "StdList`1" ||
+        struct.name == "StdMap`2" ||
+        struct.name == "StdSet`1" ||
+        struct.name == "StdVector`1")) ||
+    struct.type.startsWith("RedBlackTree::Node")
+  )
     continue;
 
   console.log(`Processing ${struct.type}`);
@@ -575,16 +576,13 @@ for (const struct of ffxiv_structs.structs) {
 function writeField(field: Field) {
   if (field.size) {
     if (field.is_string) {
-      writeNode(
-        "node",
-        {
-          type: "Utf8TextNode",
-          name: field.name,
-          comment: "",
-          hidden: "false",
-          length: field.size,
-        }
-      );
+      writeNode("node", {
+        type: "Utf8TextNode",
+        name: field.name,
+        comment: "",
+        hidden: "false",
+        length: field.size,
+      });
       return;
     } else {
       writeNode(
@@ -665,79 +663,100 @@ function writeField(field: Field) {
       reference: fieldType,
     });
   } else if (flags.plugin && fieldType.startsWith("StdDeque<")) {
-    writeNode("node", {
-      type: "FFXIV::StdDeque",
-      name: field.name,
-      comment: "",
-      hidden: "false",
-      count: "0"
-    }, true);
-      const innerType = fieldType.substring(9, fieldType.lastIndexOf(">"));
-      writeField({
-        name: "",
-        offset: 0,
-        type: innerType,
-      });
+    writeNode(
+      "node",
+      {
+        type: "FFXIV::StdDeque",
+        name: field.name,
+        comment: "",
+        hidden: "false",
+        count: "0",
+      },
+      true
+    );
+    const innerType = fieldType.substring(9, fieldType.lastIndexOf(">"));
+    writeField({
+      name: "",
+      offset: 0,
+      type: innerType,
+    });
     writeLine("</node>");
   } else if (flags.plugin && fieldType.startsWith("StdList<")) {
-    writeNode("node", {
-      type: "FFXIV::StdList",
-      name: field.name,
-      comment: "",
-      hidden: "false",
-      count: "0"
-    }, true);
-      const innerType = fieldType.substring(8, fieldType.lastIndexOf(">"));
-      writeField({
-        name: "",
-        offset: 0,
-        type: innerType,
-      });
+    writeNode(
+      "node",
+      {
+        type: "FFXIV::StdList",
+        name: field.name,
+        comment: "",
+        hidden: "false",
+        count: "0",
+      },
+      true
+    );
+    const innerType = fieldType.substring(8, fieldType.lastIndexOf(">"));
+    writeField({
+      name: "",
+      offset: 0,
+      type: innerType,
+    });
     writeLine("</node>");
   } else if (flags.plugin && fieldType.startsWith("StdMap<")) {
-    writeNode("node", {
-      type: "FFXIV::StdSet",
-      name: field.name,
-      comment: "",
-      hidden: "false",
-      count: "0"
-    }, true);
-      const innerType = "StdPair<" + fieldType.substring(7, fieldType.lastIndexOf(">")) + ">";
-      writeField({
-        name: "",
-        offset: 0,
-        type: innerType,
-      });
+    writeNode(
+      "node",
+      {
+        type: "FFXIV::StdSet",
+        name: field.name,
+        comment: "",
+        hidden: "false",
+        count: "0",
+      },
+      true
+    );
+    const innerType =
+      "StdPair<" + fieldType.substring(7, fieldType.lastIndexOf(">")) + ">";
+    writeField({
+      name: "",
+      offset: 0,
+      type: innerType,
+    });
     writeLine("</node>");
   } else if (flags.plugin && fieldType.startsWith("StdSet<")) {
-    writeNode("node", {
-      type: "FFXIV::StdSet",
-      name: field.name,
-      comment: "",
-      hidden: "false",
-      count: "0"
-    }, true);
-      const innerType = fieldType.substring(7, fieldType.lastIndexOf(">"));
-      writeField({
-        name: "",
-        offset: 0,
-        type: innerType,
-      });
+    writeNode(
+      "node",
+      {
+        type: "FFXIV::StdSet",
+        name: field.name,
+        comment: "",
+        hidden: "false",
+        count: "0",
+      },
+      true
+    );
+    const innerType = fieldType.substring(7, fieldType.lastIndexOf(">"));
+    writeField({
+      name: "",
+      offset: 0,
+      type: innerType,
+    });
     writeLine("</node>");
   } else if (flags.plugin && fieldType.startsWith("StdVector<")) {
-    writeNode("node", {
-      type: "FFXIV::StdVector",
-      name: field.name,
-      comment: "",
-      hidden: "false",
-      count: "0"
-    }, true);
-      const innerType = fieldType.substring(10, fieldType.lastIndexOf(">"));
-      writeField({
-        name: "",
-        offset: 0,
-        type: innerType,
-      });
+    writeNode(
+      "node",
+      {
+        type: "FFXIV::StdVector",
+        name: field.name,
+        comment: "",
+        hidden: "false",
+        count: "0",
+      },
+      true
+    );
+    const innerType = fieldType.substring(10, fieldType.lastIndexOf(">"));
+    writeField({
+      name: "",
+      offset: 0,
+      type: innerType,
+    });
     writeLine("</node>");
   } else if (fieldType in enumTypes) {
     writeNode("node", {
