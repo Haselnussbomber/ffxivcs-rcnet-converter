@@ -782,7 +782,7 @@ function writeField(field: Field) {
         name: field.name,
         comment: "",
         hidden: "false",
-        size: field.size ?? 1,
+        length: field.size ?? 1,
       });
     } else {
       writeNode("node", {
